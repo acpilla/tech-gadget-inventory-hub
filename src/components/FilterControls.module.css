@@ -1,0 +1,13 @@
+/* FilterControls toolbar — scoped CSS Module. */
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  flex-wrap: wrap;
+}
+
+.label {
+  color: rgba(0, 0, 0, 0.7);
+}

@@ -49,3 +49,8 @@
   color: rgba(0, 0, 0, 0.6);
   white-space: nowrap;
 }
+
+.emptyCell {
+  padding: 28px 16px;
+  color: rgba(0, 0, 0, 0.55);
+}

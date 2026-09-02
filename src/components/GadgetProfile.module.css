@@ -1,0 +1,56 @@
+/* GadgetProfile layout — scoped CSS Module. */
+
+.profile {
+  padding: 20px;
+}
+
+@media (min-width: 600px) {
+  .profile {
+    padding: 24px;
+  }
+}
+
+.profileHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.divider {
+  margin: 12px 0 16px;
+}
+
+/* Field grid: labels above values, wrapping into responsive columns. */
+.fields {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px 24px;
+  margin: 0;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.fieldLabel {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+.fieldValue {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.87);
+}
+
+/* Empty state when no gadget is selected. */
+.emptyProfile {
+  padding: 28px;
+  text-align: center;
+}

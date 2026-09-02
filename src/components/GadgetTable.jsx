@@ -40,6 +40,7 @@ function GadgetTable({
   onSelectGadget,
   pagination,
   onPaginationChange,
+  emptyMessage = 'No gadgets to display.',
 }) {
   const columns = useMemo(
     () => [
@@ -111,6 +112,17 @@ function GadgetTable({
             ))}
           </TableHead>
           <TableBody>
+            {rows.length === 0 && (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  align="center"
+                  className={styles.emptyCell}
+                >
+                  {emptyMessage}
+                </TableCell>
+              </TableRow>
+            )}
             {rows.map((row) => {
               const isSelected = row.original.id === selectedGadgetId
               return (

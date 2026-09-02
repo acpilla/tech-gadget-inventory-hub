@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import {
   Alert,
   AppBar,
@@ -12,6 +12,9 @@ import MemoryIcon from '@mui/icons-material/Memory'
 import Inventory2Icon from '@mui/icons-material/Inventory2'
 import GadgetForm from './components/GadgetForm.jsx'
 import GadgetTable, { PAGE_SIZE } from './components/GadgetTable.jsx'
+import GadgetProfile from './components/GadgetProfile.jsx'
+import FilterControls from './components/FilterControls.jsx'
+import { USER_ROLES } from './constants.js'
 import styles from './App.module.css'
 
 /**
@@ -24,27 +27,57 @@ import styles from './App.module.css'
  *
  * Shared application state (local React state):
  *  - gadgets:          the registry of submitted gadget records
- *  - selectedGadgetId: the currently selected row / active gadget
+ *  - selectedGadgetId: the id of the currently selected row
+ *  - activeGadget:     the resolved active gadget (synced from selection)
+ *  - roleFilter:       All / Engineer / Tester filter for the table
  *  - pagination:       controlled TanStack pagination (5 rows per page)
  *  - snackbar:         success feedback after a registration
- *
- * Checkpoint 3 adds the TanStack registry table (pagination + row selection)
- * and keeps the conditional rendering (empty state vs. registry table).
  */
 function App() {
   const [gadgets, setGadgets] = useState([])
   const [selectedGadgetId, setSelectedGadgetId] = useState(null)
+  const [activeGadget, setActiveGadget] = useState(null)
+  const [roleFilter, setRoleFilter] = useState('All')
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: PAGE_SIZE,
   })
   const [snackbar, setSnackbar] = useState({ open: false, message: '' })
 
+  /**
+   * Selection synchronization (the required useEffect).
+   *
+   *   table row selection → selectedGadgetId → [useEffect] → activeGadget → profile
+   *
+   * Whenever the selected id changes (a row click) — or the underlying gadget
+   * list changes — resolve the matching record into `activeGadget`, which the
+   * profile card renders.
+   */
+  useEffect(() => {
+    const match = gadgets.find((g) => g.id === selectedGadgetId) || null
+    setActiveGadget(match)
+  }, [selectedGadgetId, gadgets])
+
+  // Role counts drive the filter labels (All (6), Engineer (3), Tester (3)).
+  const counts = useMemo(() => {
+    const base = { All: gadgets.length }
+    USER_ROLES.forEach((role) => {
+      base[role] = gadgets.filter((g) => g.userRole === role).length
+    })
+    return base
+  }, [gadgets])
+
+  // The rows shown in the table after applying the role filter.
+  const filteredGadgets = useMemo(() => {
+    if (roleFilter === 'All') return gadgets
+    return gadgets.filter((g) => g.userRole === roleFilter)
+  }, [gadgets, roleFilter])
+
   const handleAddGadget = (record) => {
-    // Newest first so a freshly registered gadget is immediately visible.
     setGadgets((prev) => [record, ...prev])
-    // Auto-select the new gadget and jump to the first page where it appears.
     setSelectedGadgetId(record.id)
+    // A new gadget always belongs to "All"; reset filter + page so it's visible.
+    setRoleFilter('All')
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
     setSnackbar({
       open: true,
@@ -53,6 +86,12 @@ function App() {
   }
 
   const handleSelectGadget = (id) => setSelectedGadgetId(id)
+
+  const handleFilterChange = (next) => {
+    setRoleFilter(next)
+    // Filtering changes the row set, so return to the first page.
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
+  }
 
   const handleCloseSnackbar = (_event, reason) => {
     if (reason === 'clickaway') return
@@ -77,7 +116,7 @@ function App() {
         <div className={styles.stack}>
           <GadgetForm onAddGadget={handleAddGadget} />
 
-          {/* Dynamic conditional rendering: empty state vs. registry table */}
+          {/* Dynamic conditional rendering: empty state vs. registry + profile */}
           {!hasGadgets ? (
             <Paper variant="outlined" className={styles.emptyState}>
               <span className={styles.emptyIcon}>
@@ -92,13 +131,22 @@ function App() {
               </Typography>
             </Paper>
           ) : (
-            <GadgetTable
-              gadgets={gadgets}
-              selectedGadgetId={selectedGadgetId}
-              onSelectGadget={handleSelectGadget}
-              pagination={pagination}
-              onPaginationChange={setPagination}
-            />
+            <>
+              <FilterControls
+                value={roleFilter}
+                onChange={handleFilterChange}
+                counts={counts}
+              />
+              <GadgetTable
+                gadgets={filteredGadgets}
+                selectedGadgetId={selectedGadgetId}
+                onSelectGadget={handleSelectGadget}
+                pagination={pagination}
+                onPaginationChange={setPagination}
+                emptyMessage={`No ${roleFilter} gadgets found.`}
+              />
+              <GadgetProfile gadget={activeGadget} />
+            </>
           )}
         </div>
       </Container>
