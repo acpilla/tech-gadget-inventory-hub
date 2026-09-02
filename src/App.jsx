@@ -2,12 +2,7 @@ import { useState } from 'react'
 import {
   Alert,
   AppBar,
-  Chip,
   Container,
-  Divider,
-  List,
-  ListItem,
-  ListItemText,
   Paper,
   Snackbar,
   Toolbar,
@@ -16,6 +11,7 @@ import {
 import MemoryIcon from '@mui/icons-material/Memory'
 import Inventory2Icon from '@mui/icons-material/Inventory2'
 import GadgetForm from './components/GadgetForm.jsx'
+import GadgetTable, { PAGE_SIZE } from './components/GadgetTable.jsx'
 import styles from './App.module.css'
 
 /**
@@ -26,26 +22,37 @@ import styles from './App.module.css'
  *  - MUI ThemeProvider (theme.js) sets the global brand palette/typography.
  *  - CSS Modules (App.module.css) own layout, spacing, and custom visuals.
  *
- * Holds the shared application state:
- *  - gadgets:  the registry of submitted gadget records (local React state)
- *  - snackbar: success feedback after a registration
+ * Shared application state (local React state):
+ *  - gadgets:          the registry of submitted gadget records
+ *  - selectedGadgetId: the currently selected row / active gadget
+ *  - pagination:       controlled TanStack pagination (5 rows per page)
+ *  - snackbar:         success feedback after a registration
  *
- * Checkpoint 2 adds the registration form + validation and demonstrates
- * conditional rendering (empty state vs. a registered-gadgets summary).
- * The TanStack registry table replaces the temporary summary in Checkpoint 3.
+ * Checkpoint 3 adds the TanStack registry table (pagination + row selection)
+ * and keeps the conditional rendering (empty state vs. registry table).
  */
 function App() {
   const [gadgets, setGadgets] = useState([])
+  const [selectedGadgetId, setSelectedGadgetId] = useState(null)
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: PAGE_SIZE,
+  })
   const [snackbar, setSnackbar] = useState({ open: false, message: '' })
 
   const handleAddGadget = (record) => {
     // Newest first so a freshly registered gadget is immediately visible.
     setGadgets((prev) => [record, ...prev])
+    // Auto-select the new gadget and jump to the first page where it appears.
+    setSelectedGadgetId(record.id)
+    setPagination((prev) => ({ ...prev, pageIndex: 0 }))
     setSnackbar({
       open: true,
       message: `"${record.name}" registered successfully.`,
     })
   }
+
+  const handleSelectGadget = (id) => setSelectedGadgetId(id)
 
   const handleCloseSnackbar = (_event, reason) => {
     if (reason === 'clickaway') return
@@ -70,7 +77,7 @@ function App() {
         <div className={styles.stack}>
           <GadgetForm onAddGadget={handleAddGadget} />
 
-          {/* Dynamic conditional rendering: empty state vs. registered summary */}
+          {/* Dynamic conditional rendering: empty state vs. registry table */}
           {!hasGadgets ? (
             <Paper variant="outlined" className={styles.emptyState}>
               <span className={styles.emptyIcon}>
@@ -81,46 +88,17 @@ function App() {
               </Typography>
               <Typography variant="body2">
                 Use the form above to register your first gadget. It will appear
-                here once submitted.
+                in the registry once submitted.
               </Typography>
             </Paper>
           ) : (
-            <Paper variant="outlined" className={styles.summaryPaper}>
-              <div className={styles.summaryHeader}>
-                <Typography variant="h6" component="h2">
-                  Registered Gadgets
-                </Typography>
-                <Chip
-                  label={`${gadgets.length} total`}
-                  color="primary"
-                  size="small"
-                />
-              </div>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                className={styles.summaryNote}
-              >
-                A sortable, paginated registry table will replace this list in the
-                next checkpoint.
-              </Typography>
-              <Divider />
-              <List dense>
-                {gadgets.map((g) => (
-                  <ListItem key={g.id} disableGutters>
-                    <ListItemText
-                      primary={`${g.name} — ${g.category}`}
-                      secondary={`${g.manufacturer} · Health ${g.healthRating} · ${g.userRole}`}
-                    />
-                    <Chip
-                      label={g.userRole}
-                      size="small"
-                      color={g.userRole === 'Engineer' ? 'primary' : 'secondary'}
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </Paper>
+            <GadgetTable
+              gadgets={gadgets}
+              selectedGadgetId={selectedGadgetId}
+              onSelectGadget={handleSelectGadget}
+              pagination={pagination}
+              onPaginationChange={setPagination}
+            />
           )}
         </div>
       </Container>

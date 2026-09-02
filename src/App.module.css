@@ -53,27 +53,6 @@
   margin-top: 8px;
 }
 
-.summaryPaper {
-  padding: 20px;
-}
-
-@media (min-width: 600px) {
-  .summaryPaper {
-    padding: 24px;
-  }
-}
-
-.summaryHeader {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 8px;
-}
-
-.summaryNote {
-  margin-bottom: 8px;
-}
-
 .alert {
   width: 100%;
 }

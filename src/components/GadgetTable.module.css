@@ -1,0 +1,51 @@
+/* GadgetTable layout & spacing — scoped CSS Module.
+   The table markup is MUI; TanStack Table drives the row model + pagination. */
+
+.tablePaper {
+  padding: 20px;
+}
+
+@media (min-width: 600px) {
+  .tablePaper {
+    padding: 24px;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 12px;
+}
+
+.tableContainer {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+}
+
+/* Bold, non-wrapping header cells with a subtle tint.
+   :global reaches MUI's own head-cell class from inside this scoped module. */
+.tableContainer :global(.MuiTableCell-head) {
+  font-weight: 700;
+  white-space: nowrap;
+  background-color: #eef2f6;
+}
+
+/* Rows are clickable to select a gadget. */
+.bodyRow {
+  cursor: pointer;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.pageIndicator {
+  color: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
