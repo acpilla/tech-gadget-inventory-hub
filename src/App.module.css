@@ -1,0 +1,79 @@
+/* App-level layout & spacing — scoped CSS Module. */
+
+.page {
+  min-height: 100vh;
+  background-color: #f4f6f8;
+}
+
+.brandIcon {
+  margin-right: 12px;
+}
+
+.brandTitle {
+  flex-grow: 1;
+}
+
+/* Translucent count badge sitting on the colored AppBar. */
+.headerBadge {
+  padding: 4px 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.container {
+  padding-top: 32px;
+  padding-bottom: 32px;
+}
+
+/* Vertical rhythm between the main sections. */
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.emptyState {
+  padding: 32px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Sized via font-size; the icon uses fontSize="inherit". */
+.emptyIcon {
+  font-size: 48px;
+  line-height: 1;
+  opacity: 0.5;
+}
+
+.emptyTitle {
+  margin-top: 8px;
+}
+
+.summaryPaper {
+  padding: 20px;
+}
+
+@media (min-width: 600px) {
+  .summaryPaper {
+    padding: 24px;
+  }
+}
+
+.summaryHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.summaryNote {
+  margin-bottom: 8px;
+}
+
+.alert {
+  width: 100%;
+}

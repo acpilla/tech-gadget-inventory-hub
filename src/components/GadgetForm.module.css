@@ -1,0 +1,50 @@
+/* GadgetForm layout & spacing — scoped CSS Module.
+   MUI supplies the form controls; these classes own the layout. */
+
+.formPaper {
+  padding: 20px;
+}
+
+@media (min-width: 600px) {
+  .formPaper {
+    padding: 24px;
+  }
+}
+
+.formHeader {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+
+/* Responsive two-column field grid: single column on phones. */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.roleControl {
+  margin-top: 8px;
+}
+
+/* Action buttons stack on phones, sit inline on larger screens. */
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+@media (min-width: 600px) {
+  .actions {
+    flex-direction: row;
+  }
+}

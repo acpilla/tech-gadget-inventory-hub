@@ -2,7 +2,6 @@ import { useState } from 'react'
 import {
   Alert,
   AppBar,
-  Box,
   Chip,
   Container,
   Divider,
@@ -11,16 +10,21 @@ import {
   ListItemText,
   Paper,
   Snackbar,
-  Stack,
   Toolbar,
   Typography,
 } from '@mui/material'
 import MemoryIcon from '@mui/icons-material/Memory'
 import Inventory2Icon from '@mui/icons-material/Inventory2'
 import GadgetForm from './components/GadgetForm.jsx'
+import styles from './App.module.css'
 
 /**
  * Tech Gadget Inventory Hub — application root.
+ *
+ * Styling approach:
+ *  - MUI components provide the UI widgets + accessibility.
+ *  - MUI ThemeProvider (theme.js) sets the global brand palette/typography.
+ *  - CSS Modules (App.module.css) own layout, spacing, and custom visuals.
  *
  * Holds the shared application state:
  *  - gadgets:  the registry of submitted gadget records (local React state)
@@ -51,34 +55,28 @@ function App() {
   const hasGadgets = gadgets.length > 0
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default' }}>
+    <div className={styles.page}>
       <AppBar position="static" elevation={0}>
         <Toolbar>
-          <MemoryIcon sx={{ mr: 1.5 }} />
-          <Typography variant="h6" component="h1" sx={{ flexGrow: 1 }}>
+          <MemoryIcon className={styles.brandIcon} />
+          <Typography variant="h6" component="h1" className={styles.brandTitle}>
             Tech Gadget Inventory Hub
           </Typography>
-          <Chip
-            label={`${gadgets.length} registered`}
-            color="default"
-            size="small"
-            sx={{ bgcolor: 'rgba(255,255,255,0.18)', color: '#fff' }}
-          />
+          <span className={styles.headerBadge}>{gadgets.length} registered</span>
         </Toolbar>
       </AppBar>
 
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Stack spacing={3}>
+      <Container maxWidth="lg" className={styles.container}>
+        <div className={styles.stack}>
           <GadgetForm onAddGadget={handleAddGadget} />
 
           {/* Dynamic conditional rendering: empty state vs. registered summary */}
           {!hasGadgets ? (
-            <Paper
-              variant="outlined"
-              sx={{ p: 4, textAlign: 'center', color: 'text.secondary' }}
-            >
-              <Inventory2Icon sx={{ fontSize: 48, opacity: 0.5 }} />
-              <Typography variant="h6" component="h2" sx={{ mt: 1 }}>
+            <Paper variant="outlined" className={styles.emptyState}>
+              <span className={styles.emptyIcon}>
+                <Inventory2Icon fontSize="inherit" />
+              </span>
+              <Typography variant="h6" component="h2" className={styles.emptyTitle}>
                 No gadgets registered yet
               </Typography>
               <Typography variant="body2">
@@ -87,13 +85,8 @@ function App() {
               </Typography>
             </Paper>
           ) : (
-            <Paper variant="outlined" sx={{ p: { xs: 2.5, sm: 3 } }}>
-              <Stack
-                direction="row"
-                alignItems="center"
-                justifyContent="space-between"
-                sx={{ mb: 1 }}
-              >
+            <Paper variant="outlined" className={styles.summaryPaper}>
+              <div className={styles.summaryHeader}>
                 <Typography variant="h6" component="h2">
                   Registered Gadgets
                 </Typography>
@@ -102,8 +95,12 @@ function App() {
                   color="primary"
                   size="small"
                 />
-              </Stack>
-              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+              </div>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                className={styles.summaryNote}
+              >
                 A sortable, paginated registry table will replace this list in the
                 next checkpoint.
               </Typography>
@@ -125,7 +122,7 @@ function App() {
               </List>
             </Paper>
           )}
-        </Stack>
+        </div>
       </Container>
 
       <Snackbar
@@ -138,12 +135,12 @@ function App() {
           onClose={handleCloseSnackbar}
           severity="success"
           variant="filled"
-          sx={{ width: '100%' }}
+          className={styles.alert}
         >
           {snackbar.message}
         </Alert>
       </Snackbar>
-    </Box>
+    </div>
   )
 }
 

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import {
-  Box,
   Button,
   FormControl,
   FormControlLabel,
@@ -12,7 +11,6 @@ import {
   Radio,
   RadioGroup,
   Select,
-  Stack,
   TextField,
   Typography,
 } from '@mui/material'
@@ -20,6 +18,7 @@ import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
 import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import { CATEGORIES, EMPTY_FORM, USER_ROLES } from '../constants.js'
 import { validateField, validateForm } from '../validation.js'
+import styles from './GadgetForm.module.css'
 
 /**
  * GadgetForm — polished MUI registration form with real-time inline validation.
@@ -97,24 +96,18 @@ function GadgetForm({ onAddGadget }) {
       onSubmit={handleSubmit}
       noValidate
       variant="outlined"
-      sx={{ p: { xs: 2.5, sm: 3 } }}
+      className={styles.formPaper}
     >
-      <Stack spacing={0.5} sx={{ mb: 2 }}>
+      <div className={styles.formHeader}>
         <Typography variant="h6" component="h2">
           Register a Gadget
         </Typography>
         <Typography variant="body2" color="text.secondary">
           Fill in the details below. Fields validate as you type.
         </Typography>
-      </Stack>
+      </div>
 
-      <Box
-        sx={{
-          display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
-          gap: 2,
-        }}
-      >
+      <div className={styles.grid}>
         {/* Gadget Name */}
         <TextField
           label="Gadget Name"
@@ -198,14 +191,14 @@ function GadgetForm({ onAddGadget }) {
           error={showError('techBrand')}
           helperText={showError('techBrand') ? errors.techBrand : ' '}
         />
-      </Box>
+      </div>
 
       {/* User Role radio group */}
       <FormControl
         component="fieldset"
         required
         error={showError('userRole')}
-        sx={{ mt: 1 }}
+        className={styles.roleControl}
       >
         <FormLabel component="legend">User Role</FormLabel>
         <RadioGroup
@@ -229,11 +222,7 @@ function GadgetForm({ onAddGadget }) {
         </FormHelperText>
       </FormControl>
 
-      <Stack
-        direction={{ xs: 'column', sm: 'row' }}
-        spacing={1.5}
-        sx={{ mt: 2 }}
-      >
+      <div className={styles.actions}>
         <Button
           type="submit"
           variant="contained"
@@ -251,7 +240,7 @@ function GadgetForm({ onAddGadget }) {
         >
           Reset
         </Button>
-      </Stack>
+      </div>
     </Paper>
   )
 }
