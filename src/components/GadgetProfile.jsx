@@ -1,13 +1,20 @@
-import { Chip, Divider, Paper, Typography } from '@mui/material'
+import { Chip, Divider, LinearProgress, Paper, Typography } from '@mui/material'
 import styles from './GadgetProfile.module.css'
+
+// Map a health rating (1–100) to a MUI status color.
+function healthColor(rating) {
+  if (rating >= 80) return 'success'
+  if (rating >= 50) return 'warning'
+  return 'error'
+}
 
 /**
  * GadgetProfile — the "active gadget" detail card.
  *
  * Receives the resolved active gadget (synchronized from the table selection
  * via a useEffect in App). Shows every field, with the User Role rendered as a
- * clear MUI Chip/Badge. Falls back to a guidance message when nothing is
- * selected.
+ * clear MUI Chip/Badge and the Health Rating as a color-coded progress bar.
+ * Falls back to a guidance message when nothing is selected.
  */
 function GadgetProfile({ gadget }) {
   if (!gadget) {
@@ -20,11 +27,10 @@ function GadgetProfile({ gadget }) {
     )
   }
 
-  const fields = [
+  const textFields = [
     ['Category', gadget.category],
     ['Sub-category', gadget.subCategory],
     ['Manufacturer', gadget.manufacturer],
-    ['Health Rating', `${gadget.healthRating} / 100`],
     ['Tech Brand / Company', gadget.techBrand],
   ]
 
@@ -48,12 +54,26 @@ function GadgetProfile({ gadget }) {
       <Divider className={styles.divider} />
 
       <dl className={styles.fields}>
-        {fields.map(([label, value]) => (
+        {textFields.map(([label, value]) => (
           <div key={label} className={styles.field}>
             <dt className={styles.fieldLabel}>{label}</dt>
             <dd className={styles.fieldValue}>{value}</dd>
           </div>
         ))}
+
+        {/* Health rating with a color-coded bar. */}
+        <div className={styles.field}>
+          <dt className={styles.fieldLabel}>Health Rating</dt>
+          <dd className={styles.fieldValue}>
+            {gadget.healthRating} / 100
+            <LinearProgress
+              variant="determinate"
+              value={gadget.healthRating}
+              color={healthColor(gadget.healthRating)}
+              className={styles.healthBar}
+            />
+          </dd>
+        </div>
       </dl>
     </Paper>
   )

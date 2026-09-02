@@ -131,6 +131,15 @@ function GadgetTable({
                   hover
                   selected={isSelected}
                   onClick={() => onSelectGadget(row.original.id)}
+                  onKeyDown={(event) => {
+                    // Keyboard accessibility: Enter / Space selects the row.
+                    if (event.key === 'Enter' || event.key === ' ') {
+                      event.preventDefault()
+                      onSelectGadget(row.original.id)
+                    }
+                  }}
+                  tabIndex={0}
+                  aria-selected={isSelected}
                   className={styles.bodyRow}
                 >
                   {row.getVisibleCells().map((cell) => (

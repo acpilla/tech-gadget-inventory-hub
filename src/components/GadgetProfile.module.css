@@ -49,6 +49,12 @@
   color: rgba(0, 0, 0, 0.87);
 }
 
+.healthBar {
+  margin-top: 6px;
+  height: 8px;
+  border-radius: 4px;
+}
+
 /* Empty state when no gadget is selected. */
 .emptyProfile {
   padding: 28px;

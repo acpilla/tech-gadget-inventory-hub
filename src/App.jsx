@@ -151,6 +151,13 @@ function App() {
         </div>
       </Container>
 
+      <footer className={styles.footer}>
+        <Typography variant="caption" color="text.secondary">
+          Tech Gadget Inventory Hub · Built with React, Vite, MUI &amp; TanStack
+          Table
+        </Typography>
+      </footer>
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={3000}
