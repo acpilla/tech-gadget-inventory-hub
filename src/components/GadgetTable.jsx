@@ -17,8 +17,6 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore'
-import NavigateNextIcon from '@mui/icons-material/NavigateNext'
 import styles from './GadgetTable.module.css'
 
 const PAGE_SIZE = 5
@@ -46,7 +44,6 @@ function GadgetTable({
     () => [
       { accessorKey: 'name', header: 'Gadget Name' },
       { accessorKey: 'category', header: 'Category' },
-      { accessorKey: 'subCategory', header: 'Sub-category' },
       { accessorKey: 'manufacturer', header: 'Manufacturer' },
       { accessorKey: 'healthRating', header: 'Health' },
       { accessorKey: 'techBrand', header: 'Tech Brand' },
@@ -131,15 +128,6 @@ function GadgetTable({
                   hover
                   selected={isSelected}
                   onClick={() => onSelectGadget(row.original.id)}
-                  onKeyDown={(event) => {
-                    // Keyboard accessibility: Enter / Space selects the row.
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault()
-                      onSelectGadget(row.original.id)
-                    }
-                  }}
-                  tabIndex={0}
-                  aria-selected={isSelected}
                   className={styles.bodyRow}
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -161,7 +149,6 @@ function GadgetTable({
         <Button
           variant="outlined"
           size="small"
-          startIcon={<NavigateBeforeIcon />}
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
@@ -173,7 +160,6 @@ function GadgetTable({
         <Button
           variant="outlined"
           size="small"
-          endIcon={<NavigateNextIcon />}
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >

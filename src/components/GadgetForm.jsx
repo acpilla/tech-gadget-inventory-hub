@@ -14,14 +14,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline'
-import RestartAltIcon from '@mui/icons-material/RestartAlt'
 import { CATEGORIES, EMPTY_FORM, USER_ROLES } from '../constants.js'
 import { validateField, validateForm } from '../validation.js'
 import styles from './GadgetForm.module.css'
 
 /**
- * GadgetForm — polished MUI registration form with real-time inline validation.
+ * GadgetForm — MUI registration form with real-time inline validation.
  *
  * State (useState):
  *  - values:  current field values
@@ -52,7 +50,7 @@ function GadgetForm({ onAddGadget }) {
     setErrors((prev) => ({ ...prev, [field]: validateField(field, values[field]) }))
   }
 
-  const handleReset = () => {
+  const resetForm = () => {
     setValues(EMPTY_FORM)
     setErrors({})
     setTouched({})
@@ -79,7 +77,6 @@ function GadgetForm({ onAddGadget }) {
           : `gadget-${Date.now()}-${Math.random().toString(16).slice(2)}`,
       name: values.name.trim(),
       category: values.category,
-      subCategory: values.subCategory.trim(),
       manufacturer: values.manufacturer.trim(),
       healthRating: Number(values.healthRating),
       techBrand: values.techBrand.trim(),
@@ -87,7 +84,7 @@ function GadgetForm({ onAddGadget }) {
     }
 
     onAddGadget(record)
-    handleReset()
+    resetForm()
   }
 
   return (
@@ -141,18 +138,6 @@ function GadgetForm({ onAddGadget }) {
             {showError('category') ? errors.category : ' '}
           </FormHelperText>
         </FormControl>
-
-        {/* Sub-category / Genre */}
-        <TextField
-          label="Sub-category / Genre"
-          required
-          fullWidth
-          value={values.subCategory}
-          onChange={handleChange('subCategory')}
-          onBlur={handleBlur('subCategory')}
-          error={showError('subCategory')}
-          helperText={showError('subCategory') ? errors.subCategory : ' '}
-        />
 
         {/* Manufacturer */}
         <TextField
@@ -223,22 +208,8 @@ function GadgetForm({ onAddGadget }) {
       </FormControl>
 
       <div className={styles.actions}>
-        <Button
-          type="submit"
-          variant="contained"
-          size="large"
-          startIcon={<AddCircleOutlineIcon />}
-        >
+        <Button type="submit" variant="contained" size="large">
           Register Gadget
-        </Button>
-        <Button
-          type="button"
-          variant="outlined"
-          size="large"
-          startIcon={<RestartAltIcon />}
-          onClick={handleReset}
-        >
-          Reset
         </Button>
       </div>
     </Paper>

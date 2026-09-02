@@ -18,10 +18,6 @@ export function validateField(field, value) {
       if (!CATEGORIES.includes(v)) return 'Please select a valid category.'
       return ''
 
-    case 'subCategory':
-      if (!v) return 'Sub-category / genre is required.'
-      return ''
-
     case 'manufacturer':
       if (!v) return 'Manufacturer is required.'
       return ''

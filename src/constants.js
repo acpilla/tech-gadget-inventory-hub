@@ -9,7 +9,6 @@ export const USER_ROLES = ['Engineer', 'Tester']
 export const EMPTY_FORM = {
   name: '',
   category: '',
-  subCategory: '',
   manufacturer: '',
   healthRating: '',
   techBrand: '',

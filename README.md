@@ -29,13 +29,13 @@ Concerns are cleanly separated:
 ## Features
 
 - **Registration form** with real-time inline validation (required fields,
-  min-length name, numeric 1–100 health rating, user-role radios)
-- **Success feedback** via a MUI Snackbar; the form resets on submit
+  min-length name, numeric 1–100 health rating, user-role radios); the form
+  resets on a valid submit
 - **Registry table** (TanStack Table) with client-side **pagination — 5 rows per
   page**, Previous/Next controls, a page indicator, and disabled states
-- **Row selection** with a visible highlight (mouse + keyboard accessible)
+- **Row selection** with a visible highlight
 - **Active gadget profile** card — synchronized from the selection via
-  `useEffect` — with a role **badge** and a color-coded health bar
+  `useEffect` — with a role **badge**
 - **Role filter** toggle (All / Engineer / Tester) that resets pagination
 - **Empty states** for: no registrations yet, no filter matches, no selection
 
@@ -47,7 +47,6 @@ Each gadget record contains:
 | -------------------- | --------------------------------------- |
 | Gadget Name          | Required, min 3 characters              |
 | Category             | Smartphone / Laptop / Wearable / Audio  |
-| Sub-category / Genre | Required                                |
 | Manufacturer         | Required                                |
 | Health Rating        | Required, numeric 1–100                 |
 | Tech Brand / Company | Required                                |

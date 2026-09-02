@@ -5,25 +5,6 @@
   background-color: #f4f6f8;
 }
 
-.brandIcon {
-  margin-right: 12px;
-}
-
-.brandTitle {
-  flex-grow: 1;
-}
-
-/* Translucent count badge sitting on the colored AppBar. */
-.headerBadge {
-  padding: 4px 12px;
-  border-radius: 999px;
-  background-color: rgba(255, 255, 255, 0.18);
-  color: #fff;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  white-space: nowrap;
-}
-
 .container {
   padding-top: 32px;
   padding-bottom: 32px;
@@ -42,22 +23,6 @@
   color: rgba(0, 0, 0, 0.6);
 }
 
-/* Sized via font-size; the icon uses fontSize="inherit". */
-.emptyIcon {
-  font-size: 48px;
-  line-height: 1;
-  opacity: 0.5;
-}
-
 .emptyTitle {
-  margin-top: 8px;
-}
-
-.alert {
-  width: 100%;
-}
-
-.footer {
-  text-align: center;
-  padding: 20px 16px 32px;
+  margin-top: 4px;
 }

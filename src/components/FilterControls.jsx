@@ -14,7 +14,7 @@ import styles from './FilterControls.module.css'
  * one option is always active; clicking the active one is ignored so the filter
  * can never end up in an empty state.
  */
-function FilterControls({ value, onChange, counts }) {
+function FilterControls({ value, onChange }) {
   const handleChange = (_event, next) => {
     // ToggleButtonGroup emits null when the active button is clicked again.
     if (next !== null) onChange(next)
@@ -33,10 +33,10 @@ function FilterControls({ value, onChange, counts }) {
         color="primary"
         aria-label="filter gadgets by user role"
       >
-        <ToggleButton value="All">All ({counts.All})</ToggleButton>
+        <ToggleButton value="All">All</ToggleButton>
         {USER_ROLES.map((role) => (
           <ToggleButton key={role} value={role}>
-            {role} ({counts[role]})
+            {role}
           </ToggleButton>
         ))}
       </ToggleButtonGroup>
